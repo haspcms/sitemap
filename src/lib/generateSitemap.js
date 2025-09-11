@@ -3,6 +3,7 @@ const path = require("path");
 const { SitemapRequest } = require("../api/sitemap/request");
 
 const { getConfig } = require("../lib/config/env");
+
 async function generateSitemap({
   outDir = "./public",
   siteUrl = "",
@@ -56,6 +57,13 @@ async function generateSitemap({
     const fileName = `sitemap-${index}.xml`;
     const filePath = path.join(outDir, fileName);
 
+    // Check if sitemap file exists
+    if (fs.existsSync(filePath)) {
+      console.log(`📄 Sitemap ${fileName} already exists, overwriting...`);
+    } else {
+      console.log(`🆕 Creating new sitemap file: ${fileName}`);
+    }
+
     const xml = [
       '<?xml version="1.0" encoding="UTF-8"?>',
       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
@@ -77,6 +85,15 @@ async function generateSitemap({
   });
 
   // 5. Create sitemap index file
+  const sitemapIndexPath = path.join(outDir, "sitemap.xml");
+
+  // Check if sitemap index exists
+  if (fs.existsSync(sitemapIndexPath)) {
+    console.log(`📄 Sitemap index sitemap.xml already exists, overwriting...`);
+  } else {
+    console.log(`🆕 Creating new sitemap index file: sitemap.xml`);
+  }
+
   const sitemapIndexXml = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
@@ -91,7 +108,7 @@ async function generateSitemap({
     "</sitemapindex>",
   ].join("");
 
-  fs.writeFileSync(path.join(outDir, "sitemap.xml"), sitemapIndexXml, "utf8");
+  fs.writeFileSync(sitemapIndexPath, sitemapIndexXml, "utf8");
 
   console.log(
     `✅ Generated ${sitemapFiles.length} sitemap files + sitemap.xml index in ${outDir}`
