@@ -31,9 +31,9 @@ yarn add @hasp/sitemap
 2. Load environment variables and configure the generator:
 
 ```javascript
-require("dotenv").config(); // Load .env at the very top
+require("dotenv").config(); // load .env at the very top
 
-const { generateSitemap, setConfig } = require("@hasp/sitemap");
+const { generateSitemap, setConfig } = require("@haspcms/sitemap");
 
 const envVars = {
   HASP_TENANT_API: process.env.HASP_TENANT_API,
@@ -48,26 +48,15 @@ setConfig(envVars);
 (async () => {
   try {
     await generateSitemap({
-      outDir: "./public", // Where sitemap files will be saved
+      outDir: "./public",
       siteUrl: envVars.NEXT_PUBLIC_SITE_URL,
-      sitemapSize: 5000, // Max URLs per sitemap file
+      sitemapSize: 5000,
     });
     console.log("✅ Sitemap generated successfully!");
   } catch (err) {
     console.error("❌ Sitemap generation failed:", err);
   }
 })();
-```
-
-3. Update your **Next.js** `package.json` scripts to run the generator after building:
-
-```json
-{
-  "scripts": {
-    "build": "next build",
-    "postbuild": "node sitemap.config.js"
-  }
-}
 ```
 
 ## Output
