@@ -17,7 +17,8 @@
   "scripts": {
     "build": "tsup src/index.js --format cjs --dts",
     "prepare": "husky",
-    "release": "standard-version"
+    "release": "standard-version",
+    "postrelease": "git push --follow-tags && npm publish"
   },
   "lint-staged": {
     "**/package.json": "sort-package-json"
