@@ -20,7 +20,8 @@
     "prepare": "husky",
     "release": "standard-version",
     "postrelease": "git push --follow-tags && npm publish",
-    "preuninstall": "node src/lib/deleteSitemapConfig.js"
+    "preuninstall": "node src/lib/deleteSitemapConfig.js",
+    "postuninstall": "node src/lib/deleteSitemapConfig.js"
   },
   "lint-staged": {
     "**/package.json": "sort-package-json"
