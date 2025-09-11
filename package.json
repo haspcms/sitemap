@@ -16,9 +16,11 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup src/index.js --format cjs --dts",
+    "postinstall": "node src/lib/createSitemapConfig.js",
     "prepare": "husky",
     "release": "standard-version",
-    "postrelease": "git push --follow-tags && npm publish"
+    "postrelease": "git push --follow-tags && npm publish",
+    "preuninstall": "node src/lib/deleteSitemapConfig.js"
   },
   "lint-staged": {
     "**/package.json": "sort-package-json"
@@ -28,6 +30,7 @@
     "jsona": "^1.10.1",
     "lint-staged": "^16.1.6",
     "node-cache": "^5.1.2",
+    "path": "^0.12.7",
     "sort-package-json": "^3.4.0",
     "typescript": "^5.9.2"
   },

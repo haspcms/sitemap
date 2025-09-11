@@ -16,13 +16,7 @@ It helps improve SEO by automatically generating XML sitemaps for pages and cont
 ## Installation
 
 ```bash
-npm install @hasp/sitemap
-```
-
-or with Yarn:
-
-```bash
-yarn add @hasp/sitemap
+npm install @haspcms/sitemap
 ```
 
 ## Configuration
@@ -38,7 +32,7 @@ const { generateSitemap, setConfig } = require("@haspcms/sitemap");
 const envVars = {
   HASP_TENANT_API: process.env.HASP_TENANT_API,
   HASP_RATE_LIMIT_KEY: process.env.HASP_RATE_LIMIT_KEY,
-  HASP_MICROSITE_ID: process.env.NEXT_PUBLIC_MICROSITE_ID,
+  HASP_MICROSITE_ID: process.env.HASP_MICROSITE_ID,
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
   HASP_CONTENT_TYPES: process.env.HASP_CONTENT_TYPES,
 };
