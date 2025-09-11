@@ -2,7 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const configFile = path.join("./sitemap.config.js");
+const configFile = path.join("../../../sitemap.config.js");
 
 if (!fs.existsSync(configFile)) {
   const defaultConfig = `     
@@ -11,10 +11,10 @@ require("dotenv").config(); // load .env at the very top
 
 const { generateSitemap, setConfig } = require("@haspcms/sitemap");
 
-const envVars = {
+const envVars = { 
   HASP_TENANT_API: process.env.HASP_TENANT_API,
   HASP_RATE_LIMIT_KEY: process.env.HASP_RATE_LIMIT_KEY,
-  HASP_MICROSITE_ID: process.env.NEXT_PUBLIC_MICROSITE_ID,
+  HASP_MICROSITE_ID: process.env.HASP_MICROSITE_ID,
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL, 
   HASP_CONTENT_TYPES: process.env.HASP_CONTENT_TYPES,
 };

@@ -2,7 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const configFile = path.join("./sitemap.config.js");
+const configFile = path.join("../../../sitemap.config.js");
 
 if (fs.existsSync(configFile)) {
   const content = fs.readFileSync(configFile, "utf8");
