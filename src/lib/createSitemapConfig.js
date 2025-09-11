@@ -11,7 +11,7 @@ require("dotenv").config(); // load .env at the very top
 const { generateSitemap, setConfig } = require("@haspcms/sitemap");
 
 const envVars = { 
-  HASP_TENANT_API: process.env.HASP_TENANT_API,
+  HASP_TENANT_API: process.env.HASP_TENANT_API, 
   HASP_RATE_LIMIT_KEY: process.env.HASP_RATE_LIMIT_KEY,
   HASP_MICROSITE_ID: process.env.HASP_MICROSITE_ID,
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL, 

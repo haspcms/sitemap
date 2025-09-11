@@ -11,7 +11,7 @@ It helps improve SEO by automatically generating XML sitemaps for pages and cont
 - 📄 **Supports multiple page/content types**
 - 🔗 **Customizable URL patterns**
 - 🔍 **SEO-friendly output**, fully compatible with search engines
-- 🛠️ **Easy integration with Next.js (or Node.js apps)**
+- 🛠️ **Easy integration with Next.js**
 
 ## Installation
 
@@ -67,19 +67,22 @@ The generator produces standard XML sitemap files inside `./public`:
 
 These files are ready to be served and discovered by search engines.
 
-## Example `.env`
+## Example `.env` requirements
 
 ```env
-HASP_TENANT_API=https://your-tenant-api.hasp.com
-HASP_RATE_LIMIT_KEY=your-rate-limit-key
-NEXT_PUBLIC_MICROSITE_ID=123
-NEXT_PUBLIC_SITE_URL=https://www.example.com
-HASP_CONTENT_TYPES=pages,blog,products
+HASP_TENANT_API="http://your-tenant-domain-api.com"
+HASP_MICROSITE_ID=1234
+HASP_RATE_LIMIT_KEY="your-rate-limit-key"
+HASP_CONTENT_TYPES="news,boilerplate-articles"
 ```
 
 ## License
 
 This project is licensed under the [MIT License](./LICENSE).
+
+## View Repository
+
+`https://github.com/haspcms/sitemap`
 
 ---
 
