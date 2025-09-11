@@ -2,24 +2,36 @@
 
 ## Overview
 
-A sitemap generator for HASP projects.
+**HASP Sitemap** is a lightweight sitemap generator designed for HASP CMS–powered projects.  
+It helps improve SEO by automatically generating XML sitemaps for pages and content entries.
 
 ## Features
 
-- Automatically generates XML sitemaps
-- Supports multiple page types
-- Configurable URL patterns
-- SEO-friendly output
+- ⚡ **Automatic sitemap generation** – no manual XML editing needed
+- 📄 **Supports multiple page/content types**
+- 🔗 **Customizable URL patterns**
+- 🔍 **SEO-friendly output**, fully compatible with search engines
+- 🛠️ **Easy integration with Next.js (or Node.js apps)**
 
 ## Installation
 
+```bash
+npm install @hasp/sitemap
+```
+
+or with Yarn:
+
+```bash
+yarn add @hasp/sitemap
+```
 
 ## Configuration
 
-Configure your sitemap settings by adding `sitemap.config.js` :
+1. Create a `sitemap.config.js` file in the root of your project.
+2. Load environment variables and configure the generator:
 
 ```javascript
-require("dotenv").config(); // load .env at the very top
+require("dotenv").config(); // Load .env at the very top
 
 const { generateSitemap, setConfig } = require("@hasp/sitemap");
 
@@ -36,9 +48,9 @@ setConfig(envVars);
 (async () => {
   try {
     await generateSitemap({
-      outDir: "./public",
+      outDir: "./public", // Where sitemap files will be saved
       siteUrl: envVars.NEXT_PUBLIC_SITE_URL,
-      sitemapSize: 5000,
+      sitemapSize: 5000, // Max URLs per sitemap file
     });
     console.log("✅ Sitemap generated successfully!");
   } catch (err) {
@@ -47,10 +59,44 @@ setConfig(envVars);
 })();
 ```
 
+3. Update your **Next.js** `package.json` scripts to run the generator after building:
+
+```json
+{
+  "scripts": {
+    "build": "next build",
+    "postbuild": "node sitemap.config.js"
+  }
+}
+```
+
 ## Output
 
-Generates a standard XML sitemap format compatible with search engines.
+The generator produces standard XML sitemap files inside `./public`:
+
+```
+/public/sitemap.xml       # Sitemap index
+/public/sitemap-0.xml     # First chunk
+/public/sitemap-1.xml     # Additional chunks (if needed)
+```
+
+These files are ready to be served and discovered by search engines.
+
+## Example `.env`
+
+```env
+HASP_TENANT_API=https://your-tenant-api.hasp.com
+HASP_RATE_LIMIT_KEY=your-rate-limit-key
+NEXT_PUBLIC_MICROSITE_ID=123
+NEXT_PUBLIC_SITE_URL=https://www.example.com
+HASP_CONTENT_TYPES=pages,blog,products
+```
 
 ## License
 
-MIT
+This project is licensed under the [MIT License](./LICENSE).
+
+---
+
+💡 **Tip:** For best SEO results, make sure your sitemap URLs are accessible at  
+`https://yourdomain.com/sitemap.xml`.
