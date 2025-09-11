@@ -2,9 +2,6 @@
   "name": "@haspcms/sitemap",
   "version": "1.0.0",
   "description": "A helper package for fetching sitemap pages and content entries from HASP CMS.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "type": "commonjs",
   "keywords": [
     "sitemap",
     "haspcms",
@@ -12,22 +9,40 @@
     "seo",
     "nextjs"
   ],
-  "author": "localnetwork",
   "license": "MIT",
+  "author": "localnetwork",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup src/index.js --format cjs --dts"
+    "build": "tsup src/index.js --format cjs --dts",
+    "prepare": "husky",
+    "release": "standard-version"
+  },
+  "lint-staged": {
+    "**/package.json": "sort-package-json"
   },
   "dependencies": {
     "axios": "^1.11.0",
     "jsona": "^1.10.1",
+    "lint-staged": "^16.1.6",
     "node-cache": "^5.1.2",
+    "sort-package-json": "^3.4.0",
     "typescript": "^5.9.2"
+  },
+  "devDependencies": {
+    "@commitlint/config-conventional": "^19.8.1",
+    "commitlint": "^19.8.1",
+    "dotenv": "^16.0.0",
+    "husky": "^9.1.7",
+    "standard-version": "^9.5.0",
+    "tsup": "^8.5.0"
   },
   "peerDependencies": {
     "dotenv": "^16.0.0"
   },
-  "devDependencies": {
-    "tsup": "^8.5.0",
-    "dotenv": "^16.0.0"
+  "engines": {
+    "node": ">=18",
+    "npm": ">=10.2.4"
   }
 }

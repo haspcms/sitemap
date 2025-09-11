@@ -13,15 +13,6 @@ A sitemap generator for HASP projects.
 
 ## Installation
 
-```bash
-npm install
-```
-
-## Usage
-
-```bash
-node index.js
-```
 
 ## Configuration
 
