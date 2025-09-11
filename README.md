@@ -59,6 +59,8 @@ setConfig(envVars);
 })();
 ```
 
+3. After creating the sitemap.config.js file, add a `prebuild` script that runs `node sitemap.config.js` in your `package.json` project file.
+
 ## Output
 
 The generator produces standard XML sitemap files inside `./public`:
