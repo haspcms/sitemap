@@ -1,4 +1,4 @@
-const { getConfig } = require("../config/env");
+const { getConfig } = require("../lib/config/env");
 
 function setup(axios) {
   axios.interceptors.request.use((config) => {

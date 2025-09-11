@@ -1,14 +1,13 @@
 {
-  "name": "hasp-sitemap",
+  "name": "@haspcms/sitemap",
   "version": "1.0.0",
   "description": "A helper package for fetching sitemap pages and content entries from HASP CMS.",
-  "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "commonjs",
   "keywords": [
     "sitemap",
-    "hasp",
+    "haspcms",
     "cms",
     "seo",
     "nextjs"
@@ -16,16 +15,19 @@
   "author": "localnetwork",
   "license": "MIT",
   "scripts": {
-    "build": "tsup src/index.js --format cjs,esm --dts"
+    "build": "tsup src/index.js --format cjs --dts"
   },
   "dependencies": {
     "axios": "^1.11.0",
     "jsona": "^1.10.1",
     "node-cache": "^5.1.2",
-    "node-fetch": "^3.3.2",
     "typescript": "^5.9.2"
   },
+  "peerDependencies": {
+    "dotenv": "^16.0.0"
+  },
   "devDependencies": {
-    "tsup": "^8.5.0"
+    "tsup": "^8.5.0",
+    "dotenv": "^16.0.0"
   }
 }

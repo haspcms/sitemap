@@ -1,7 +1,8 @@
 const fs = require("fs");
 const path = require("path");
-const { SitemapRequest } = require("./api/sitemap/request");
+const { SitemapRequest } = require("../api/sitemap/request");
 
+const { getConfig } = require("../lib/config/env");
 async function generateSitemap({
   outDir = "./public",
   siteUrl = "",
@@ -14,16 +15,33 @@ async function generateSitemap({
 
   // 2. Fetch all pages
   const pages = await SitemapRequest.pagesPath();
+  const variables = getConfig();
+  const contentTypes = [variables.HASP_CONTENT_TYPES];
+  const contentData = await Promise.all(
+    contentTypes.map(async (contentType) => {
+      return await SitemapRequest.contentEntriesPath(contentType);
+    })
+  );
+
+  const pathsHandler = [...pages, ...contentData.flat()];
 
   // 3. Convert pages into URL objects
-  const urls = pages.map((p) => {
-    const slug = p?.slug || p?.path || "";
+  const urls = pathsHandler.map((p) => {
+    const slug = p?.route_url || p?.path || "";
     return {
       loc: `${siteUrl.replace(/\/$/, "")}/${slug.replace(/^\//, "")}`,
       lastmod: new Date().toISOString(),
       changefreq: "daily",
       priority: 0.7,
     };
+  });
+
+  // 3.1. Add main domain (home page `/`)
+  urls.unshift({
+    loc: siteUrl.replace(/\/$/, ""), // no trailing slash
+    lastmod: new Date().toISOString(),
+    changefreq: "daily",
+    priority: 1.0, // usually homepage is most important
   });
 
   // 4. Chunk into multiple sitemap files
@@ -43,7 +61,7 @@ async function generateSitemap({
       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
       ...chunk.map(
         (u) => `
-        <url>
+        <url> 
           <loc>${u.loc}</loc>
           <lastmod>${u.lastmod}</lastmod>
           <changefreq>${u.changefreq}</changefreq>

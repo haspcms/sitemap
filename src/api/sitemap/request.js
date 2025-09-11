@@ -1,18 +1,20 @@
-const fetch = require("node-fetch");
 const BaseApi = require("../_base.api");
 const Jsona = require("jsona").default;
 
 const dataFormatter = new Jsona();
+const { getConfig } = require("../../lib/config/env");
 
 class SitemapRequest {
   static async getSitemapPages(params = "") {
     const variables = getConfig();
     try {
       const queryParams = params
-        ? params + `&filter[sites.id]=${MICROSITE}`
-        : `?filter[sites.id]=${MICROSITE}`;
+        ? params + `&filter[sites.id]=${variables.HASP_MICROSITE_ID || ""}`
+        : `?filter[sites.id]=${variables.HASP_MICROSITE_ID || ""}`;
 
-      const res = await BaseApi.get(APIDOMAIN + "/api/pages" + queryParams);
+      const res = await BaseApi.get(
+        variables.HASP_TENANT_API + "/api/pages" + queryParams
+      );
       return res.data;
     } catch (error) {
       console.error("Error fetching sitemap pages:", error);
@@ -21,13 +23,14 @@ class SitemapRequest {
   }
 
   static async getContents(id, params = "") {
+    const variables = getConfig();
     try {
       const queryParams = params
-        ? params + `&filter[sites.id]=${MICROSITE}`
-        : `?filter[sites.id]=${MICROSITE}`;
+        ? params + `&filter[sites.id]=${variables.HASP_MICROSITE_ID || ""}`
+        : `?filter[sites.id]=${variables.HASP_MICROSITE_ID || ""}`;
 
       const res = await BaseApi.get(
-        APIDOMAIN + `/api/contents/${id}/entries` + queryParams
+        variables.HASP_TENANT_API + `/api/contents/${id}/entries` + queryParams
       );
       return res.data;
     } catch (error) {
@@ -58,6 +61,8 @@ class SitemapRequest {
   }
 
   static async contentEntriesPath(content) {
+    const variables = getConfig();
+
     const contentsHandler = await this.getContents(content);
     if (!contentsHandler) return [];
 
