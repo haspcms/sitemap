@@ -34,7 +34,7 @@ class SitemapRequest {
       );
       return res.data;
     } catch (error) {
-      console.error("Error fetching content entries:", error);
+      // console.error("Error fetching content entries:", error);
       return null;
     }
   }
@@ -63,24 +63,41 @@ class SitemapRequest {
   static async contentEntriesPath(content) {
     const variables = getConfig();
 
-    const contentsHandler = await this.getContents(content);
-    if (!contentsHandler) return [];
+    const contents = typeof content === "string" ? content.split(",") : content;
+    if (!contents.length) return [];
 
-    let allData = dataFormatter.deserialize(contentsHandler);
-    let { last_page = 1 } = contentsHandler?.meta || {};
-    let current_page = 1;
+    let contentsHandler = await Promise.all(
+      contents.map(async (item) => {
+        const handler = await this.getContents(item);
+        return handler ? dataFormatter.deserialize(handler) : [];
+      })
+    );
 
-    while (current_page < last_page) {
-      current_page += 1;
-      const nextHandler = await this.getContents(
-        content,
+    // Flatten results
+    let allData = contentsHandler.flat();
+
+    // Handle pagination for each content type
+    for (let item of contents) {
+      let current_page = 1;
+      let handler = await this.getContents(
+        item,
         `?page[number]=${current_page}`
       );
-      if (nextHandler) {
-        const nextContents = dataFormatter.deserialize(nextHandler);
-        allData = [...allData, ...nextContents];
+      let { last_page = 1 } = handler?.meta || {};
+
+      while (current_page < last_page) {
+        current_page++;
+        const nextHandler = await this.getContents(
+          item,
+          `?page[number]=${current_page}`
+        );
+        if (nextHandler) {
+          const nextContents = dataFormatter.deserialize(nextHandler);
+          allData = [...allData, ...nextContents];
+        }
       }
     }
+
     return allData;
   }
 }
