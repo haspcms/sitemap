@@ -1,6 +1,6 @@
 {
   "name": "@haspcms/sitemap",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "A helper package for fetching sitemap pages and content entries from HASP CMS.",
   "keywords": [
     "sitemap",
