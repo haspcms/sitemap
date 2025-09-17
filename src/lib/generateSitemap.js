@@ -1,7 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 const { SitemapRequest } = require("../api/sitemap/request");
-
 const { getConfig } = require("../lib/config/env");
 
 async function generateSitemap({
@@ -15,14 +14,50 @@ async function generateSitemap({
   }
 
   // 2. Fetch all pages
+  console.log("📄 Fetching static pages...");
   const pages = await SitemapRequest.pagesPath();
+
+  console.log("📄 Fetching content data...");
   const variables = getConfig();
   const contentTypes = [variables.HASP_CONTENT_TYPES];
+
+  let generatedCount = 0;
+  let totalCountEstimate = 0;
+  const startTime = Date.now();
+
+  // log progress every second
+  const interval = setInterval(() => {
+    const elapsed = (Date.now() - startTime) / 1000;
+    const rate = generatedCount / (elapsed || 1);
+    const remaining = totalCountEstimate
+      ? Math.max(totalCountEstimate - generatedCount, 0)
+      : 0;
+    const eta = rate > 0 ? (remaining / rate).toFixed(1) : "∞";
+    console.log(
+      `⏱️ Progress: ${generatedCount}/${
+        totalCountEstimate || "?"
+      } URLs | Elapsed: ${elapsed.toFixed(1)}s | ETA: ${eta}s`
+    );
+  }, 1000);
+
+  // Wrap the original call to log pages as they are fetched
+  async function fetchContentEntries(contentType) {
+    return await SitemapRequest.contentEntriesPath(
+      contentType,
+      10,
+      (count) => {
+        generatedCount += count;
+      } // ✅ live progress
+    );
+  }
+
   const contentData = await Promise.all(
     contentTypes.map(async (contentType) => {
-      return await SitemapRequest.contentEntriesPath(contentType);
+      return await fetchContentEntries(contentType);
     })
   );
+
+  clearInterval(interval);
 
   const pathsHandler = [...pages, ...contentData.flat()];
 
@@ -39,11 +74,13 @@ async function generateSitemap({
 
   // 3.1. Add main domain (home page `/`)
   urls.unshift({
-    loc: siteUrl.replace(/\/$/, ""), // no trailing slash
+    loc: siteUrl.replace(/\/$/, ""),
     lastmod: new Date().toISOString(),
     changefreq: "daily",
-    priority: 1.0, // usually homepage is most important
+    priority: 1.0,
   });
+
+  console.log(`✅ Finished fetching. Total URLs: ${urls.length}`);
 
   // 4. Chunk into multiple sitemap files
   const chunks = [];
@@ -57,7 +94,6 @@ async function generateSitemap({
     const fileName = `sitemap-${index}.xml`;
     const filePath = path.join(outDir, fileName);
 
-    // Check if sitemap file exists
     if (fs.existsSync(filePath)) {
       console.log(`📄 Sitemap ${fileName} already exists, overwriting...`);
     } else {
@@ -87,7 +123,6 @@ async function generateSitemap({
   // 5. Create sitemap index file
   const sitemapIndexPath = path.join(outDir, "sitemap.xml");
 
-  // Check if sitemap index exists
   if (fs.existsSync(sitemapIndexPath)) {
     console.log(`📄 Sitemap index sitemap.xml already exists, overwriting...`);
   } else {
