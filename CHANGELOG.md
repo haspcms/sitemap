@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/haspcms/sitemap/compare/v1.1.6...v1.2.0) (2026-02-05)
+
+
+### Features
+
+* added zero trust support ([f4c3c55](https://github.com/haspcms/sitemap/commit/f4c3c55d32ec3548c5a5c29570f774526ab5cff5))
+
 ### [1.1.6](https://github.com/haspcms/sitemap/compare/v1.1.5...v1.1.6) (2025-09-17)
 
 ### [1.1.5](https://github.com/haspcms/sitemap/compare/v1.1.4...v1.1.5) (2025-09-17)
