@@ -15,7 +15,7 @@ class SitemapRequest {
         : `?filter[sites.id]=${variables.HASP_MICROSITE_ID || ""}`;
 
       const res = await BaseApi.get(
-        variables.HASP_TENANT_API + "/api/pages" + queryParams
+        variables.HASP_TENANT_API + "/api/pages" + queryParams,
       );
       return res.data;
     } catch (error) {
@@ -32,7 +32,7 @@ class SitemapRequest {
         : `?filter[sites.id]=${variables.HASP_MICROSITE_ID || ""}`;
 
       const res = await BaseApi.get(
-        variables.HASP_TENANT_API + `/api/contents/${id}/entries` + queryParams
+        variables.HASP_TENANT_API + `/api/contents/${id}/entries` + queryParams,
       );
       return res.data;
     } catch {
@@ -51,7 +51,7 @@ class SitemapRequest {
     while (current_page < last_page) {
       current_page += 1;
       const nextHandler = await this.getSitemapPages(
-        `?page[number]=${current_page}`
+        `?page[number]=${current_page}`,
       );
       if (nextHandler) {
         const nextPages = dataFormatter.deserialize(nextHandler);
@@ -70,7 +70,7 @@ class SitemapRequest {
   static async contentEntriesPath(
     content,
     concurrency = MAX_CONCURRENCY,
-    onProgress = null
+    onProgress = null,
   ) {
     const variables = getConfig();
     const contents = typeof content === "string" ? content.split(",") : content;
@@ -93,7 +93,7 @@ class SitemapRequest {
       if (onProgress) onProgress(allEntries.length);
 
       console.log(
-        `✅ ${item}: page 1/${last_page} → ${allEntries.length} entries`
+        `✅ ${item}: page 1/${last_page} → ${allEntries.length} entries`,
       );
 
       // Batch fetch remaining pages
@@ -102,7 +102,7 @@ class SitemapRequest {
 
       const runBatch = async (pages) => {
         const promises = pages.map((page) =>
-          this.getContents(item, `?page[number]=${page}`)
+          this.getContents(item, `?page[number]=${page}`),
         );
 
         const settled = await Promise.allSettled(promises);
@@ -118,7 +118,7 @@ class SitemapRequest {
             if (onProgress) onProgress(deserialized.length);
 
             console.log(
-              `✅ ${item}: page ${pageNum}/${last_page} → ${deserialized.length} entries`
+              `✅ ${item}: page ${pageNum}/${last_page} → ${deserialized.length} entries`,
             );
           } else {
             console.error(`❌ ${item}: failed page ${pageNum}`);
@@ -131,7 +131,7 @@ class SitemapRequest {
       while (!done && currentPage <= last_page) {
         const batch = Array.from(
           { length: concurrency },
-          (_, i) => currentPage + i
+          (_, i) => currentPage + i,
         ).filter((p) => p <= last_page);
 
         await runBatch(batch);

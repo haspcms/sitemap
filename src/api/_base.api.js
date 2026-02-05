@@ -1,51 +1,31 @@
 const axios = require("axios");
 const interceptorSetup = require("./interceptor");
 
-// Apply interceptor to global axios instance
-interceptorSetup(axios);
+// Create axios instance
+const api = axios.create();
 
-// Create a base axios instance (not yet used in methods, but available)
-const basicAxios = axios.create();
+// Apply interceptor to THIS instance
+interceptorSetup(api);
 
 class BaseApi {
-  static async get(URL) {
-    return await axios.get(URL);
+  static async get(URL, config = {}) {
+    return api.get(URL, config);
   }
 
-  static async post(URL, data) {
-    return await axios.post(URL, data).then(
-      (response) => response,
-      (error) => {
-        throw error;
-      }
-    );
+  static async post(URL, data, config = {}) {
+    return api.post(URL, data, config);
   }
 
-  static async put(URL, data) {
-    return await axios.put(URL, data).then(
-      (response) => response,
-      (error) => {
-        throw error;
-      }
-    );
+  static async put(URL, data, config = {}) {
+    return api.put(URL, data, config);
   }
 
-  static async patch(URL, data) {
-    return await axios.patch(URL, data).then(
-      (response) => response,
-      (error) => {
-        throw error;
-      }
-    );
+  static async patch(URL, data, config = {}) {
+    return api.patch(URL, data, config);
   }
 
-  static async delete(URL) {
-    return await axios.delete(URL).then(
-      (response) => response,
-      (error) => {
-        throw error;
-      }
-    );
+  static async delete(URL, config = {}) {
+    return api.delete(URL, config);
   }
 }
 

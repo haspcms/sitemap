@@ -36,7 +36,7 @@ async function generateSitemap({
     console.log(
       `⏱️ Progress: ${generatedCount}/${
         totalCountEstimate || "?"
-      } URLs | Elapsed: ${elapsed.toFixed(1)}s | ETA: ${eta}s`
+      } URLs | Elapsed: ${elapsed.toFixed(1)}s | ETA: ${eta}s`,
     );
   }, 1000);
 
@@ -47,14 +47,14 @@ async function generateSitemap({
       10,
       (count) => {
         generatedCount += count;
-      } // ✅ live progress
+      }, // ✅ live progress
     );
   }
 
   const contentData = await Promise.all(
     contentTypes.map(async (contentType) => {
       return await fetchContentEntries(contentType);
-    })
+    }),
   );
 
   clearInterval(interval);
@@ -111,7 +111,7 @@ async function generateSitemap({
           <changefreq>${u.changefreq}</changefreq>
           <priority>${u.priority}</priority>
         </url>
-      `
+      `,
       ),
       "</urlset>",
     ].join("");
@@ -138,7 +138,7 @@ async function generateSitemap({
         <loc>${siteUrl.replace(/\/$/, "")}/${f}</loc>
         <lastmod>${new Date().toISOString()}</lastmod>
       </sitemap>
-    `
+    `,
     ),
     "</sitemapindex>",
   ].join("");
@@ -146,7 +146,7 @@ async function generateSitemap({
   fs.writeFileSync(sitemapIndexPath, sitemapIndexXml, "utf8");
 
   console.log(
-    `✅ Generated ${sitemapFiles.length} sitemap files + sitemap.xml index in ${outDir}`
+    `✅ Generated ${sitemapFiles.length} sitemap files + sitemap.xml index in ${outDir}`,
   );
 }
 
